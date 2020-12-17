@@ -5,5 +5,6 @@
     "user": "ajaidanial",
     "password": "password"
   },
-  "table_name": "test_table"
+  "table_name": "test_table",
+  "input_file_name": "GARDBIB.TXT"
 }

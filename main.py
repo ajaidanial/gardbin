@@ -99,12 +99,6 @@ def init_app_table():
     cursor.execute(get_table_creation_command())
 
 
-def init_app():
-    """Called for initializing the app. To check if everything is properly given."""
-
-    init_app_table()
-
-
 def join_list(input_list: list) -> str:
     """Joins a given list to a string. Used in db functions."""
 
@@ -115,7 +109,7 @@ def join_list(input_list: list) -> str:
 def start():
     """Main function to start the algorithm. Called after init and stuff."""
 
-    input_file = open("GARDBIB.TXT", "r")
+    input_file = open(get_config()["input_file_name"], "r")
     records_count = 0
     data_store = []
 
@@ -160,5 +154,5 @@ def start():
 
 
 if __name__ == "__main__":
-    init_app()
+    init_app_table()
     start()
