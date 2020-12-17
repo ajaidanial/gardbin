@@ -148,7 +148,7 @@ def start():
             cursor = get_pg_cursor()
             column_values_string = ",".join(["%s"] * len(column_data))
             column_names_string = ",".join(column_data.keys())
-            insert_statement = f"INSERT INTO `%s` (%s) VALUES (%s);" % (
+            insert_statement = f"INSERT INTO %s (%s) VALUES (%s);" % (
                 get_config()["table_name"],
                 column_names_string,
                 column_values_string,
