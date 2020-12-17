@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# installing dependencies
+echo "Setting up dependencies..."
+
+sudo apt install python3 python3-dev python3-pip postgresql libpq-dev \
+  virtualenv postgresql-contrib python3-psycopg2 jq
+
 # meta data
 config_file="config.json"
 backup_file_name="./backups/$(date +%Y-%m-%d-%T)"
@@ -8,12 +14,6 @@ db_user="$(jq -r '.db_connect.user' ${config_file})"
 db_host="$(jq -r '.db_connect.host' ${config_file})"
 db_password="$(jq -r '.db_connect.password' ${config_file})"
 db_database="$(jq -r '.db_connect.database' ${config_file})"
-
-# installing dependencies
-echo "Setting up dependencies..."
-
-sudo apt install python3 python3-dev python3-pip postgresql libpq-dev \
-  virtualenv postgresql-contrib python3-psycopg2 jq
 
 # setup the virtual environment
 echo "Setting up environment..."
