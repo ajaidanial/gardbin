@@ -4,7 +4,7 @@
 echo "Setting up dependencies..."
 
 sudo apt install python3 python3-dev python3-pip postgresql libpq-dev \
-  virtualenv postgresql-contrib python3-psycopg2 jq
+  virtualenv postgresql-contrib python3-psycopg2 jq -y
 
 # meta data
 config_file="config.json"
