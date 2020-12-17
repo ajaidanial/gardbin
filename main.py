@@ -75,12 +75,16 @@ def init_app_table():
     """
 
     table_name = get_config()["table_name"]
+    column_names = list(column_data.keys())
 
     table_creation_columns_string = (
         ""  # contains `column_name VARCHAR(255) NOT NULL, ...`
     )
-    for column in column_data.keys():
-        table_creation_columns_string += f"{column} VARCHAR(255) NOT NULL,"
+    for index in range(len(column_names)):
+        table_creation_columns_string += f"{column_names[index]} VARCHAR(255) NOT NULL"
+        if len(column_names) != index:
+            # there should not be any trailing , in the syntax
+            table_creation_columns_string += ","
 
     table_creation_command = f"""
         CREATE TABLE {table_name} (
