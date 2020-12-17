@@ -3,9 +3,10 @@
 Some random algorithm that gets a text file and uses PostgreSQL to store the data.
 
 ## Getting Started
-1. Make sure the input file is in the project root.  
-2. Add necessary configurations in `config.json`.  
-3. Use `./start.sh`  
+1. Clone and `cd` to file(project root).
+2. Make sure the input file is in the project root.  
+3. Add necessary configurations in `config.json`.  
+4. Use `./start.sh`  
 
 ## Setting Up CRON
 1. Run the command `*/5 * * * * ./start.sh` to set up for every 5 minutes.  
