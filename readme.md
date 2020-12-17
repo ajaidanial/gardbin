@@ -11,3 +11,6 @@ Some random algorithm that gets a text file and uses PostgreSQL to store the dat
 ## Setting Up CRON
 1. Run the command `*/5 * * * * ./start.sh` to set up for every 5 minutes.  
 2. For more CRON configurations view [here](https://www.thegeekstuff.com/2011/07/cron-every-5-minutes/).  
+
+## Note
+1. You might have to create the database and stuff. [Follow the section here](https://www.digitalocean.com/community/tutorials/how-to-set-up-django-with-postgres-nginx-and-gunicorn-on-ubuntu-18-04#creating-the-postgresql-database-and-user).
