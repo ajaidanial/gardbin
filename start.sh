@@ -1,6 +1,6 @@
 #!/bin/bash
 
-sudo apt install postgresql python-psycopg2 libpq-dev python3 python3-dev \
+sudo apt install python3 python3-dev python3-pip postgresql libpq-dev \
   virtualenv postgresql-contrib python3-psycopg2
 
 sudo rm -r venv
