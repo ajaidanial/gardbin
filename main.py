@@ -1,5 +1,4 @@
 import pymysql.cursors
-from itertools import islice
 
 connection = pymysql.connect(
     host="localhost",
