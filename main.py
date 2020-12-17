@@ -90,7 +90,13 @@ def init_app_table():
     """
 
     cursor = get_pg_cursor()
-    cursor.execute(f"DROP TABLE {table_name}")
+
+    try:
+        cursor.execute(f"DROP TABLE {table_name}")
+    except psycopg2.errors.UndefinedTable:
+        # table does not exist | no problem
+        pass
+    # table created
     cursor.execute(table_creation_command)
 
 
