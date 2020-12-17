@@ -1,8 +1,8 @@
 {
   "db_connect": {
     "host": "localhost",
-    "database": "ajaidb",
-    "user": "ajai",
+    "database": "ajaidanial",
+    "user": "ajaidanial",
     "password": "password"
   },
   "table_name": "test_table"

@@ -105,57 +105,60 @@ def init_app():
     init_app_table()
 
 
-#
-# connection = pymysql.connect(
-#     host="localhost",
-#     user="root",
-#     password="EClavan956#",
-#     db="tagsys",
-#     cursorclass=pymysql.cursors.DictCursor,
-# )
-# print("connect successful!!!")
-#
-#
-# def concateFunc(list1):
-#     str1 = " ".join([elem for elem in list1[1:]])
-#     return str1
-#
-#
-# file1 = open("GARDBIB.TXT", "r")
+def join_list(input_list: list) -> str:
+    """Joins a given list to a string. Used in db functions."""
 
-# count_records = 0
-# l1 = []
-# # for line in islice(file1,1000):
-# for line in file1:
-#     line1 = line.split()
-#     index1 = 0
-#     if line.find("**") == 0:
-#         if line.find("**START") == 0:
-#             index1 = 1
-#         else:
-#             index1 = 0
-#     else:
-#         index1 = -1
-#     if len(line1) > 1:
-#         if column_data[line1[0]] is not None:
-#             column_data[line1[0]] += "," + concateFunc(line1)
-#         else:
-#             column_data[line1[0]] = concateFunc(line1)
-#     if index1 == 0:
-#         column_data["I3"] = int(column_data["I3"])
-#         l1.append(tuple(column_data.values()))
-#         column_data.update((k, None) for k in column_data)
-#     if len(l1) == 5000:
-#         with connection.cursor() as cursor:
-#             placeholders = ",".join(["%s"] * len(column_data))
-#             columns = ",".join(column_data.keys())
-#             sql = "INSERT INTO `mytable1` (%s) VALUES (%s)" % (columns, placeholders)
-#             count_records += 5000
-#             print("Iterator : ", count_records)
-#             cursor.executemany(sql, l1)
-#             del l1[:]
-#             connection.commit()
-# print("Total Records : ", count_records)
+    str1 = " ".join([elem for elem in input_list[1:]])
+    return str1
+
+
+def start():
+    """Main function to start the algorithm. Called after init and stuff."""
+
+    input_file = open("GARDBIB.TXT", "r")
+    records_count = 0
+    data_store = []
+
+    for line in input_file:
+        single_line_data: list = line.split()
+
+        if line.find("**") == 0:
+            if line.find("**START") == 0:
+                index = 1
+            else:
+                index = 0
+        else:
+            index = -1
+
+        if len(single_line_data) > 1:
+            if column_data[single_line_data[0]] is not None:
+                column_data[single_line_data[0]] += "," + join_list(single_line_data)
+            else:
+                column_data[single_line_data[0]] = join_list(single_line_data)
+
+        if index == 0:
+            column_data["I3"] = int(column_data["I3"])
+            data_store.append(tuple(column_data.values()))
+            column_data.update((k, None) for k in column_data)
+
+        if len(data_store) == 5000:
+            records_count += 5000
+            print(f"Iterator: {records_count}")
+
+            cursor = get_pg_cursor()
+            column_values_string = ",".join(["%s"] * len(column_data))
+            column_names_string = ",".join(column_data.keys())
+            insert_statement = f"INSERT INTO `%s` (%s) VALUES (%s);" % (
+                get_config()["table_name"],
+                column_names_string,
+                column_values_string,
+            )
+            cursor.executemany(insert_statement, data_store)
+            del data_store[:]
+
+    print(f"Total Records: {records_count}")
+
 
 if __name__ == "__main__":
     init_app()
+    start()
