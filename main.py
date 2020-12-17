@@ -52,7 +52,7 @@ column_data = {
 
 
 def get_config() -> dict:
-    """Reads the config.josn file converts to dict and returns the configuration dict."""
+    """Reads the config.json file converts to dict and returns the configuration dict."""
 
     with open("./config.json") as f:
         config = json.load(f)
@@ -81,10 +81,12 @@ def init_app_table():
         """Returns a string that can be executed to create the table."""
 
         column_names = list(column_data.keys())
-        columns_string = ""  # contains `column_name VARCHAR(255) NOT NULL, ...`
+        columns_string = ""  # contains: `column_name VARCHAR(255) NOT NULL, ...`
         for index in range(len(column_names)):
             columns_string += f"{column_names[index]} TEXT"
-            columns_string += "," if index != len(column_names) - 1 else ""
+            columns_string += (
+                "," if index != len(column_names) - 1 else ""
+            )  # should not end with trailing `,`
 
         return f"CREATE TABLE {table_name} (id SERIAL PRIMARY KEY, {columns_string})"
 
