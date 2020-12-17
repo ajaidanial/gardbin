@@ -314,3 +314,4 @@ $RECYCLE.BIN/
 # Custom config
 .vscode
 .idea
+config.json

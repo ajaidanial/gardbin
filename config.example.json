@@ -1,10 +1,10 @@
 {
   "db_connect": {
     "host": "localhost",
-    "database": "ajaidanial",
-    "user": "ajaidanial",
-    "password": "password"
+    "database": "",
+    "user": "",
+    "password": ""
   },
-  "table_name": "test_table",
+  "table_name": "",
   "input_file_name": "GARDBIB.TXT"
 }
