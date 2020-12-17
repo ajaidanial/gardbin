@@ -83,7 +83,7 @@ def init_app_table():
         column_names = list(column_data.keys())
         columns_string = ""  # contains `column_name VARCHAR(255) NOT NULL, ...`
         for index in range(len(column_names)):
-            columns_string += f"{column_names[index]} VARCHAR(255)"
+            columns_string += f"{column_names[index]} TEXT"
             columns_string += "," if index != len(column_names) - 1 else ""
 
         return f"CREATE TABLE {table_name} (id SERIAL PRIMARY KEY, {columns_string})"
