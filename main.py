@@ -90,7 +90,7 @@ def init_app_table():
     """
 
     cursor = get_pg_cursor()
-    cursor.execute(f"DROP TABLE {get_config()}")
+    cursor.execute(f"DROP TABLE {table_name}")
     cursor.execute(table_creation_command)
 
 
