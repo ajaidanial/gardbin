@@ -64,8 +64,8 @@ def get_pg_cursor():
 
     params = get_config()["db_connect"]
     conn = psycopg2.connect(**params)
-    cur = conn.cursor()
-    return cur
+    conn.autocommit = True
+    return conn.cursor()
 
 
 def init_app_table():
@@ -75,33 +75,28 @@ def init_app_table():
     """
 
     table_name = get_config()["table_name"]
-    column_names = list(column_data.keys())
-
-    table_creation_columns_string = (
-        ""  # contains `column_name VARCHAR(255) NOT NULL, ...`
-    )
-    for index in range(len(column_names)):
-        table_creation_columns_string += f"{column_names[index]} VARCHAR(255) NOT NULL"
-        if len(column_names) != index:
-            # there should not be any trailing , in the syntax
-            table_creation_columns_string += ","
-
-    table_creation_command = f"""
-        CREATE TABLE {table_name} (
-                id SERIAL PRIMARY KEY,
-                {table_creation_columns_string}
-        )
-    """
-
     cursor = get_pg_cursor()
 
+    def get_table_creation_command() -> str:
+        """Returns a string that can be executed to create the table."""
+
+        column_names = list(column_data.keys())
+        columns_string = ""  # contains `column_name VARCHAR(255) NOT NULL, ...`
+        for index in range(len(column_names)):
+            columns_string += f"{column_names[index]} VARCHAR(255) NOT NULL"
+            columns_string += "," if index != len(column_names) - 1 else ""
+
+        return f"CREATE TABLE {table_name} (id SERIAL PRIMARY KEY, {columns_string})"
+
+    # delete existing table
     try:
         cursor.execute(f"DROP TABLE {table_name}")
     except psycopg2.errors.UndefinedTable:
         # table does not exist | no problem
         pass
+
     # table created
-    cursor.execute(table_creation_command)
+    cursor.execute(get_table_creation_command())
 
 
 def init_app():
