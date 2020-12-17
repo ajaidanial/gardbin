@@ -4,6 +4,11 @@
 config_file="config.json"
 backup_file_name="./backups/$(date +%Y-%m-%d-%T)"
 
+db_user=$(jq '.db_connect.user' ${config_file})
+db_host=$(jq '.db_connect.host' ${config_file})
+db_password=$(jq '.db_connect.password' ${config_file})
+db_database=$(jq '.db_connect.database' ${config_file})
+
 # installing dependencies
 echo "Setting up dependencies..."
 
@@ -22,12 +27,11 @@ pip install -r requirements.txt
 echo "Setting up the backup..."
 
 mkdir backups
-export PGPASSWORD=$(jq '.db_connect.password' ${config_file})
+export PGPASSWORD=${db_password}
 
 # back up script visit https://gist.github.com/ajaidanial/91724d85bd899e3e4a905fa73a49f8b1 for more info
-pg_dump -F t -h $(jq '.db_connect.host' ${config_file}) -U $(jq '.db_connect.user' ${config_file}) \
-  $(jq '.db_connect.database' ${config_file}) >${backup_file_name}.backup
-gzip $(backup_file_name).backup
+pg_dump -F t -h "${db_host}" -U "${db_user}" "${db_database}" >"${backup_file_name}.backup"
+gzip "$(backup_file_name).backup"
 
 # post back up meta
 unset PGPASSWORD
